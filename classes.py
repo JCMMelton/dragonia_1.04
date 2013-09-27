@@ -28,6 +28,7 @@ class warlock:
         print "Heals you for a portion of damage dealt"
         print "Entropic Assault(2). This ability does {0} to {1} damage".format((self.intellect+self.wisdom+self.stamina)/2,(self.intellect+self.wisdom+self.stamina)*7/2)
         print "Consumes a portion of you current health. Even if you miss!"
+        print "Blood Armor(3). This ability sacrafices {0} health to create a {1} damage shield.".format(self.health*0.1,self.health*0.3)
     def f_ability0(self):
         damage = random.randrange(((self.intellect+self.stamina)*3/2),((self.intellect+self.stamina)*7/3))
         crit = random.randrange(1,100)
@@ -41,14 +42,14 @@ class warlock:
             self.health += (self.damage/5)+heal_control
             print 'Your Power Siphon {0} for {1} damage.'.format(self.dict[5],self.damage)
             print 'and heals you for {0}.'.format((self.damage/5)+heal_control)
-            #print '{0},{1}'.format(heal_control,self.health)
+            
         else:
             self.damage = damage
             heal_control = round(((self.wisdom/2)+((self.stamina*11)/self.health))/3, 0)
             self.health += (damage/6)+heal_control
             print 'Your Power Siphon {0} for {1} damage.'.format(self.dict[random.randrange(0,4)],self.damage)
             print 'and heals you for {0}.'.format((damage/6)+heal_control)
-            #print '{0},{1}'.format(heal_control,self.health)
+            
     def f_ability1(self):
         damage = random.randrange((self.intellect+self.wisdom+self.stamina)/2,(self.intellect+self.wisdom+self.stamina)*7/2)
         crit = random.randrange(1,100)
@@ -56,24 +57,29 @@ class warlock:
         sac_hp = round(self.health * (0.17),0)
         if miss <= self.miss:
             self.damage = 0
-            #sac_hp = self.health * (0.1)
             self.health -= sac_hp
             print "You MISS completely!"
             print "{0} health consumed.".format(sac_hp)
         elif crit <= self.crit:
             self.damage = damage*2
-            #sac_hp = self.health * (0.1)
             self.health -= sac_hp
             print "Your Entropic Assault crits for {0} damage.".format(self.damage)
             print "{0} health consumed.".format(sac_hp)
         else:
             self.damage = damage
-            #sac_hp = self.health * (0.1)
             self.health -= sac_hp
             print "Your Entropic Assault deals {0} damage.".format(self.damage)
             print "{0} health consumed.".format(sac_hp)
+            
+    def f_ability2(self):
+    	sac_hp = self.health*0.1
+    	sac_shield = self.health*0.3
+    	self.health -= sac_hp
+    	self.shield += sac_shield
+    	print "You sacrafice {0} health for {1} shield.".format(sac_hp, sac_shield)
+    	
     def f_health(self):
-        print "You have {0} health remaining".format(self.health)
+        print "You have {0} health and {1} shield remaining".format(self.health, self.shield)
     def f_level(self):
         self.stamina += 6
         self.wisdom += 3
